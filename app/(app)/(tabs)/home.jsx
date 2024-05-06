@@ -1,5 +1,6 @@
 import { View, Text,ScrollView } from 'react-native'
 import { SafeAreaView } from 'react-native-safe-area-context';
+import Setting from '../../../components/Setting';
 
 const Home = () => {
   return (
@@ -7,7 +8,7 @@ const Home = () => {
      <ScrollView >
      <View className="bg-primary flex-1 px-4 py-4">
 
-      
+     <Setting />
       <Text className=" font-pregular text-3xl">Home</Text>
 
       <View className="bg-black py-8 rounded-3xl px-8 mt-5">

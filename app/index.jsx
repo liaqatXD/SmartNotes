@@ -1,5 +1,5 @@
 import {  router } from 'expo-router';
-import { useState } from 'react';
+import { useState} from 'react';
 import { Text, View, StyleSheet, SafeAreaView, Pressable } from 'react-native';
 import { Ionicons } from '@expo/vector-icons';
 import { StatusBar } from 'expo-status-bar';
@@ -16,7 +16,7 @@ import Animated, {
   SlideOutLeft,
   SlideInRight,
 } from 'react-native-reanimated';
-
+import { getOnboardingVisit } from '../asyncStorage';
 //creating onBoarding screen check function
 
 const onboardingSteps = [
@@ -42,8 +42,9 @@ export default function OnboardingScreen() {
 
 
   
-
+  
   const [screenIndex, setScreenIndex] = useState(0);
+  const [showOnboarding,setShowOnboarding]=useState(true);
 
   const data = onboardingSteps[screenIndex];
 
@@ -62,7 +63,6 @@ export default function OnboardingScreen() {
   };
 
   const endOnboarding = () => {
-    // router.replace("/(auth)/sign-up");
     router.push("/(auth)/sign-up")
   };
 
@@ -70,6 +70,8 @@ export default function OnboardingScreen() {
     Gesture.Fling().direction(Directions.LEFT).onEnd(onContinue),
     Gesture.Fling().direction(Directions.RIGHT).onEnd(onBack)
   );
+
+
 
   return (
     <SafeAreaView style={styles.page}>

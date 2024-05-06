@@ -16,9 +16,7 @@ const AppwriteProvider =  ({children}) => {
       getOnboardingVisit()
       .then((visited)=>{
         if(visited!=='true'){
-          console.log(`Visited:${visited}`);
           setOnboardingVisit('true');
-          console.log('HURAAH!');
         }
        else{
         if((userSession==="true" || isLoggedIn) && rootSegment!=='(app)'){
@@ -26,7 +24,7 @@ const AppwriteProvider =  ({children}) => {
       
         }
         if(userSession==="false" && rootSegment!=='(auth)'){
-          router.replace('/(auth)/login');
+          router.replace('/(auth)/sign-up');
         }
        }
         
@@ -37,7 +35,7 @@ const AppwriteProvider =  ({children}) => {
   },[isLoggedIn,rootSegment]);
 
   const data={
-    isLoggedIn,setIsLoggedIn,appwrite:new AppWriteService()
+    isLoggedIn,setIsLoggedIn,appwrite:new AppWriteService(),
   }
   return (
     <AppwriteContext.Provider value={data} >

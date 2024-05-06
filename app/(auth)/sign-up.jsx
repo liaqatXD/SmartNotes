@@ -1,22 +1,54 @@
-import React, { useState } from 'react';
+import  { useState, useContext} from 'react';
 import { View, Text, TextInput, StyleSheet, TouchableOpacity, ScrollView } from 'react-native';
-import { Ionicons } from '@expo/vector-icons'; // Import Ionicons for icons
-import { FontAwesome } from '@expo/vector-icons';
-import { FontAwesome5 } from '@expo/vector-icons';
+import AppwriteContext from "../../lib/AppwriteContext";
+import { Ionicons } from '@expo/vector-icons'; 
 import { Entypo } from '@expo/vector-icons';
 import { StatusBar } from 'expo-status-bar';
 import { router } from 'expo-router';
-import {registerUser} from "../../lib/appwrite";
+import { setUserSession } from '../../asyncStorage';
+import { validateSignUp } from '../../validations/userValidation';
+import Toast from 'react-native-toast-message'
+
 const Signup = () => {
+const {appwrite,setIsLoggedIn}=useContext(AppwriteContext);
   const [username,setUsername]=useState('');
   const [email, setEmail] = useState('');
   const [password, setPassword] = useState('');
   const [hidePassword, setHidePassword] = useState(true); // State to toggle password visibility
-  const handleLogin = () => {
-    // Implement login logic here
-    // router.navigate("/(tabs)/home");
-    console.log('Login pressed! Email:', email, 'Password:', password);
-    registerUser(username,email,password);
+  const handleLogin = async () => {
+    let validationFailed = false;
+      try {
+          await validateSignUp({ username, email, password });
+      } catch (error) {
+        Toast.show({
+          type: 'error',
+          text1: error.message,
+          visibilityTime:2000
+        });
+          validationFailed = true; 
+      }
+    
+  
+      if (!validationFailed) {
+          try {
+              await appwrite.registerUser(email, password, username);
+              await appwrite.loginUser(email, password);
+              setIsLoggedIn(true);
+              setUserSession("true");
+              Toast.show({
+                type: 'success',
+                text1: 'Successfully Logged In',
+                visibilityTime:2000
+              });
+             
+          } catch (error) {
+            Toast.show({
+              type: 'error',
+              text1: error.message,
+              visibilityTime:2000
+            });
+          }
+      }
   };
 
   return (

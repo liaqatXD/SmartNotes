@@ -1,17 +1,54 @@
-import React, { useState } from 'react';
-import { View, Text, TextInput, Button, StyleSheet, TouchableOpacity, Image, ScrollView } from 'react-native';
-import { Ionicons } from '@expo/vector-icons'; // Import Ionicons for icons
+import { useState,useContext } from 'react';
+import { View, Text, TextInput, StyleSheet, TouchableOpacity, ScrollView } from 'react-native';
+import AppwriteContext from "../../lib/AppwriteContext";
+import {setUserSession} from "../../asyncStorage";
+import { validateLogIn } from '../../validations/userValidation';
+import Toast from 'react-native-toast-message'
+import { Ionicons } from '@expo/vector-icons'; 
 import { StatusBar } from 'expo-status-bar';
 import { router } from 'expo-router';
 const Login = () => {
+const {appwrite,setIsLoggedIn}=useContext(AppwriteContext);
   const [email, setEmail] = useState('');
   const [password, setPassword] = useState('');
   const [hidePassword, setHidePassword] = useState(true); // State to toggle password visibility
 
-  const handleLogin = () => {
-    // Implement login logic here
-    router.navigate("/(tabs)/home");
-    console.log('Login pressed! Email:', email, 'Password:', password);
+  const handleLogin = async () => {
+    let validationFailed = false;
+    try {
+        await validateLogIn({ email, password });
+    } catch (error) {
+        Toast.show({
+          type: 'error',
+          text1: error.message,
+          visibilityTime:2000,
+        });
+        validationFailed = true; 
+    }
+
+
+    if (!validationFailed) {
+      try {
+        await appwrite.loginUser(email,password);
+        setIsLoggedIn(true);
+        setUserSession("true");
+        Toast.show({
+          type: 'success',
+          text1: 'Successfully Logged In',
+          visibilityTime:2000,
+        });
+        
+      } catch (error) {
+
+      Toast.show({
+          type: 'error',
+          text1: error.message,
+          visibilityTime:2000,
+
+        });
+      }
+  
+  }
   };
 
   return (

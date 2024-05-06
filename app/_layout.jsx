@@ -27,8 +27,10 @@ const RootLayout = () => {
 
 
   return (
-    <Slot>
-    </Slot>
+    <AppwriteProvider>
+      <Slot />
+      <Toast />
+    </AppwriteProvider>
   )
 }
 
