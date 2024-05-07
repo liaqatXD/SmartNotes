@@ -3,8 +3,12 @@ import { useFonts } from "expo-font";
 import { useEffect } from "react";
 import AppwriteProvider from "../lib/AppwriteProvider";
 import Toast from 'react-native-toast-message';
+import { useColorScheme } from "nativewind";
+import { getTheme } from "../asyncStorage";
+
 const RootLayout = () => {
   SplashScreen.preventAutoHideAsync();
+  const { colorScheme,toggleColorScheme } = useColorScheme();
   const [fontsLoaded, error] = useFonts({
     "Poppins-Black": require("../assets/fonts/Poppins-Black.ttf"),
     "Poppins-Bold": require("../assets/fonts/Poppins-Bold.ttf"),
@@ -18,6 +22,10 @@ const RootLayout = () => {
   });
 
   useEffect(()=>{
+    getTheme()
+    .then((theme)=>{
+      if(theme==='dark' && colorScheme==='light') toggleColorScheme();
+    })
     if(error) throw error;
     if(fontsLoaded) SplashScreen.hideAsync();
   },[fontsLoaded,error]);

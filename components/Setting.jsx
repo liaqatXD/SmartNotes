@@ -1,10 +1,13 @@
 import { Image, Pressable} from 'react-native';
 import {router} from "expo-router";
-const settingImg=require("../assets/images/setting.png");
+import { useColorScheme } from "nativewind";
+const lightSetting=require("../assets/images/light_setting.png");
+const darkSetting=require("../assets/images/dark_setting.png");
 const Setting = () => {
+  const {colorScheme}=useColorScheme();
   return (
    <Pressable onPress={()=>router.push('/settings ')}>
-    <Image source={settingImg} style={{width:60,height:60,alignSelf:"flex-end",margin:5}} />
+    <Image source={colorScheme==='light'?darkSetting:lightSetting} style={{width:50,height:50,alignSelf:"flex-end",margin:5}} />
    </Pressable>
   )
 }

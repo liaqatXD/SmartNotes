@@ -3,17 +3,21 @@ import { Entypo } from '@expo/vector-icons';
 import { FontAwesome5 } from '@expo/vector-icons';
 import { MaterialIcons } from '@expo/vector-icons';
 import { Ionicons } from '@expo/vector-icons';
+import { useColorScheme } from "nativewind";
+
 
 const TabsLayout = () => {
+  const {colorScheme}=useColorScheme();
   return (
+
   <Tabs  screenOptions={{
     headerShown:false,
     // tabBarActiveTintColor: "#FFA001",
     // tabBarInactiveTintColor: "#CDCDE0",
     tabBarStyle: {
-      // backgroundColor: "#161622",
+       backgroundColor: colorScheme==='dark'? '#131313' : '#F2F2F2',
       // borderTopWidth: 1,
-      // borderTopColor: "#232533",
+      //  borderTopColor: "#232533",
       height:60,
       paddingBottom:5
     },
@@ -34,6 +38,7 @@ const TabsLayout = () => {
        tabBarLabel:"Timer",
        tabBarIcon: ({size, color }) =><Ionicons name="alarm" size={30} color={color} /> 
     }}   />
+
   </Tabs>
   )
 }
