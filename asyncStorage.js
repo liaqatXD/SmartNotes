@@ -77,7 +77,8 @@ export const getUserSession = async () => {
     
   export const setAccount = async (value) => {
     try {
-      await AsyncStorage.setItem('account', value);
+  const dbUser = JSON.stringify(value);
+  await AsyncStorage.setItem('account', dbUser);
     } catch (e) {
       // saving error
       throw new Error(`Error while setting Account: ${e.message}`)
@@ -87,8 +88,8 @@ export const getUserSession = async () => {
 
   export const getAccount = async () => {
     try {
-      return await AsyncStorage.getItem('account');
-       
+    const dbUser=   await AsyncStorage.getItem('account');
+       return dbUser != null ? JSON.parse(dbUser) : null;
     
     } catch (e) {
         throw new Error(`Error while getting Account: ${e.message}`)

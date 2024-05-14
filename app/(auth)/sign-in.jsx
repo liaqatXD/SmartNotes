@@ -1,7 +1,10 @@
 import { useState,useContext } from 'react';
-import { View, Text, TextInput, StyleSheet, TouchableOpacity, ScrollView } from 'react-native';
+import { View, Text, TextInput, StyleSheet, TouchableOpacity, ScrollView,
+  ActivityIndicator
+} from 'react-native';
 import AppwriteContext from "../../lib/AppwriteContext";
-import {setUserSession} from "../../asyncStorage";
+import { getUser } from '../../api/user';
+import {setUserSession,setAccount} from "../../asyncStorage";
 import { validateLogIn } from '../../validations/userValidation';
 import Toast from 'react-native-toast-message'
 import { Ionicons } from '@expo/vector-icons'; 
@@ -9,15 +12,18 @@ import { StatusBar } from 'expo-status-bar';
 import { router } from 'expo-router';
 const Login = () => {
 const {appwrite,setIsLoggedIn}=useContext(AppwriteContext);
+const [isLoading,setLoading]=useState(false);
   const [email, setEmail] = useState('');
   const [password, setPassword] = useState('');
   const [hidePassword, setHidePassword] = useState(true); // State to toggle password visibility
 
   const handleLogin = async () => {
+    setLoading(true);
     let validationFailed = false;
     try {
         await validateLogIn({ email, password });
     } catch (error) {
+      setLoading(false);
         Toast.show({
           type: 'error',
           text1: error.message,
@@ -29,7 +35,9 @@ const {appwrite,setIsLoggedIn}=useContext(AppwriteContext);
 
     if (!validationFailed) {
       try {
-        await appwrite.loginUser(email,password);
+      const dbEmail=  await appwrite.loginUser(email,password);
+      const dbUser=await getUser(dbEmail);
+        await setAccount(dbUser);
         setIsLoggedIn(true);
         setUserSession("true");
         Toast.show({
@@ -39,7 +47,7 @@ const {appwrite,setIsLoggedIn}=useContext(AppwriteContext);
         });
         
       } catch (error) {
-
+        setLoading(false);
       Toast.show({
           type: 'error',
           text1: error.message,
@@ -57,6 +65,12 @@ const {appwrite,setIsLoggedIn}=useContext(AppwriteContext);
 
       <ScrollView contentContainerStyle={styles.scrollViewContent}>
         <View style={styles.form}>
+        {
+      isLoading &&  <ActivityIndicator size={'large'} style={{position:'absolute'
+      , left:"50%",top:"50%"
+    }}/>
+     }
+
           <Text style={styles.title}>Login.</Text>
           <View style={styles.inputContainer}>
             <TextInput

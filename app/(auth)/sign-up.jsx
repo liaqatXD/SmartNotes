@@ -1,6 +1,7 @@
 import  { useState, useContext} from 'react';
-import { View, Text, TextInput, StyleSheet, TouchableOpacity, ScrollView } from 'react-native';
+import { View, Text, TextInput, StyleSheet, TouchableOpacity, ScrollView,ActivityIndicator } from 'react-native';
 import AppwriteContext from "../../lib/AppwriteContext";
+import { setAccount } from '../../asyncStorage';
 import { Ionicons } from '@expo/vector-icons'; 
 import { Entypo } from '@expo/vector-icons';
 import { StatusBar } from 'expo-status-bar';
@@ -11,15 +12,20 @@ import Toast from 'react-native-toast-message'
 
 const Signup = () => {
 const {appwrite,setIsLoggedIn}=useContext(AppwriteContext);
+  const [isLoading,setLoading]=useState(false);
   const [username,setUsername]=useState('');
   const [email, setEmail] = useState('');
   const [password, setPassword] = useState('');
   const [hidePassword, setHidePassword] = useState(true); // State to toggle password visibility
+
+
   const handleLogin = async () => {
+    setLoading(true);
     let validationFailed = false;
       try {
           await validateSignUp({ username, email, password });
       } catch (error) {
+        setLoading(false);
         Toast.show({
           type: 'error',
           text1: error.message,
@@ -31,8 +37,10 @@ const {appwrite,setIsLoggedIn}=useContext(AppwriteContext);
   
       if (!validationFailed) {
           try {
-              await appwrite.registerUser(email, password, username);
+            const dbUser=  await appwrite.registerUser(email, password, username);
+            // console.log(dbUser);
               await appwrite.loginUser(email, password);
+              await setAccount(dbUser);
               setIsLoggedIn(true);
               setUserSession("true");
               Toast.show({
@@ -42,6 +50,7 @@ const {appwrite,setIsLoggedIn}=useContext(AppwriteContext);
               });
              
           } catch (error) {
+            setLoading(false);
             Toast.show({
               type: 'error',
               text1: error.message,
@@ -52,10 +61,18 @@ const {appwrite,setIsLoggedIn}=useContext(AppwriteContext);
   };
 
   return (
+
+
     <View style={styles.container}>
          <StatusBar style="light" backgroundColor='black' />
       <ScrollView contentContainerStyle={styles.scrollViewContent}>
         <View style={styles.form}>
+     {
+      isLoading &&  <ActivityIndicator size={'large'} style={{position:'absolute'
+      , left:"50%",top:"50%"
+    }}/>
+     }
+
           <Text style={styles.title} 
           >Register.</Text>
           <View style={styles.inputContainer}>

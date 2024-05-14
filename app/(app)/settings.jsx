@@ -5,6 +5,7 @@ import { setUserSession } from '../../asyncStorage';
 import { useColorScheme } from "nativewind";
 import { setTheme } from '../../asyncStorage';
 import { getAccount } from '../../asyncStorage';
+import { StatusBar } from 'expo-status-bar';
 
 const Settings = () => {
   const { colorScheme, toggleColorScheme } = useColorScheme();
@@ -14,9 +15,11 @@ const Settings = () => {
     getAccount()
     .then((userData)=>{
         setAccount(userData);
-      });
+      })
+      .catch((err)=>console.log(err.message));
+      
   },[])
-  const [account,setAccount]=useState('');
+  const [account,setAccount]=useState({});
   // const [darkMode,setDarkMode]=useState(false);
   const {appwrite,setIsLoggedIn}=useContext(AppwriteContext);
     const logout=()=>{
@@ -26,9 +29,11 @@ const Settings = () => {
     }
   return (
    (<View className="flex-1 p-6 justify-center bg-white dark:bg-black-dark">
-
+   <Text>{account.username}</Text>
   <Text className=" my-4 text-lg font-pregular
-  p-2 dark:text-white">Email:   <Text className="bg-amber-400 dark:text-black">{account}</Text></Text>
+  p-2 dark:text-white">Email:   
+  <Text className="bg-amber-400 dark:text-black">{account.email}
+  </Text></Text>
   <View className='flex-row'>
     <Text className='my-4 text-lg font-pregular p-2 dark:text-white'>Dark Mode</Text>
     <Switch value={colorScheme==='dark'}
@@ -43,6 +48,7 @@ const Settings = () => {
     />
   </View>
  <Button title='Logout' onPress={logout} />
+ <StatusBar style={colorScheme==='light'?'dark':'light'} />
 </View>)
   )
 }

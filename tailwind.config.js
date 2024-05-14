@@ -21,6 +21,9 @@ module.exports = {
         gray: {
           100: "#CDCDE0",
         },
+        orange:{
+          custom:"#FA4A0C"
+        }
       },
       width: {
         'half': '45%',
