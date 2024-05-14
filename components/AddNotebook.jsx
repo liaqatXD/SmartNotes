@@ -1,19 +1,30 @@
 import { View, Text,TextInput,Button } from 'react-native';
 import Modal from "react-native-modal";
 import { useState } from 'react';
+import {useMutation, useQueryClient} from "@tanstack/react-query"
 import validateNotebook from '../validations/notebookValidation';
+import { addNotebook } from '../api/notebook';
 import Toast from 'react-native-toast-message'
 
 
-const AddNotebook = ({toggle,setIsNotebookModalVisible,addNotebook}) => {
+const AddNotebook = ({toggle,setIsNotebookModalVisible}) => {
+  const queryClient = useQueryClient();
   const [title,setTitle]=useState("");
   const [description,setDescription]=useState("");
-    
+
+  // React query, adding notebook
+  const addNotebookMutation = useMutation({
+    mutationFn: (notebookObj)=>addNotebook(notebookObj),
+    onSuccess: () => {
+      // Invalidate and refetch
+      queryClient.invalidateQueries({ queryKey: ['notebooks'] })
+    },
+  })
     const handleNotebook=async ()=>{
 
       try {
       await  validateNotebook({title,description});
-        addNotebook({title,description});
+        addNotebookMutation.mutate({title,description});
         setIsNotebookModalVisible(false);
         setTitle("");
         setDescription("");
@@ -29,13 +40,20 @@ const AddNotebook = ({toggle,setIsNotebookModalVisible,addNotebook}) => {
       }
       
     }
-  
+  // if(addNotebookMutation.isPending){
+
+  // }
   return (
     <Modal isVisible={toggle} 
     backdropColor='white'
     backdropOpacity={1}
     onBackButtonPress={()=>setIsNotebookModalVisible(false)}  >
       <View className="flex-1"  >
+        {
+            addNotebookMutation.isPending && 
+             <Text> 'Adding Notebook...'</Text>
+
+        }
         <Text className='text-black'>Add Notebook</Text>
         <Text>Title</Text>
         <TextInput  

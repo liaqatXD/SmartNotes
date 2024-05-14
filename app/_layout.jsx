@@ -2,6 +2,7 @@ import { Slot, SplashScreen } from "expo-router";
 import { useFonts } from "expo-font";
 import { useEffect } from "react";
 import AppwriteProvider from "../lib/AppwriteProvider";
+import {QueryClient,QueryClientProvider} from "@tanstack/react-query"
 import Toast from 'react-native-toast-message';
 import { useColorScheme } from "nativewind";
 import { getTheme } from "../asyncStorage";
@@ -32,11 +33,15 @@ const RootLayout = () => {
 
   if(!fontsLoaded && !error) return null;
 
+  //React Query
+  const queryClient = new QueryClient()
 
 
   return (
     <AppwriteProvider>
+    <QueryClientProvider client={queryClient}>
       <Slot />
+      </QueryClientProvider>
       <Toast />
     </AppwriteProvider>
   )

@@ -1,6 +1,7 @@
 import { View, Button, Text, Switch,Image} from 'react-native'
 import {useState,useEffect,useContext} from 'react';
 import AppwriteContext from "../../lib/AppwriteContext";
+import {useQueryClient} from "@tanstack/react-query"
 import { setUserSession } from '../../asyncStorage';
 import { useColorScheme } from "nativewind";
 import { setTheme } from '../../asyncStorage';
@@ -10,11 +11,13 @@ import { Ionicons } from '@expo/vector-icons';
 import { Entypo } from '@expo/vector-icons';
 import { MaterialIcons } from '@expo/vector-icons';
 
+
 const userImage=require("../../assets/images/user.png");
 
 const Settings = () => {
-  const { colorScheme, toggleColorScheme } = useColorScheme();
 
+  const { colorScheme, toggleColorScheme } = useColorScheme();
+  const queryClient=useQueryClient();
   useEffect(()=>{
 
     getAccount()
@@ -29,6 +32,7 @@ const Settings = () => {
   const {appwrite,setIsLoggedIn}=useContext(AppwriteContext);
     const logout=()=>{
         appwrite.logoutUser();
+        queryClient.removeQueries("notebooks");
         setIsLoggedIn(false);
         setUserSession("false");
     }

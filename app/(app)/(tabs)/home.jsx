@@ -9,6 +9,7 @@ import { FontAwesome6 } from '@expo/vector-icons';
 const Home = () => {
 
   useEffect(()=>{
+ 
     getAccount()
     .then((userData)=>{
         setNoOfNotes(userData.noOfNotes);

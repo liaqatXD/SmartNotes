@@ -12,6 +12,7 @@ const TabsLayout = () => {
 
   <Tabs  screenOptions={{
     headerShown:false,
+    // tabBarHideOnKeyboard:true,
     // tabBarActiveTintColor: "#FFA001",
     // tabBarInactiveTintColor: "#CDCDE0",
     tabBarStyle: {
@@ -19,7 +20,8 @@ const TabsLayout = () => {
       // borderTopWidth: 1,
       //  borderTopColor: "#232533",
       height:60,
-      paddingBottom:5
+      paddingBottom:5,
+      
     },
   }}>
     <Tabs.Screen name='home' options={{

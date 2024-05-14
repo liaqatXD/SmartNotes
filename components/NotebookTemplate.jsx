@@ -11,8 +11,8 @@ const NotebookTemplate = ({title,description}) => {
         dark:text-white">{title}</Text>
      
       
-        <Text className="text-lg text-gray-500
-      dark:text-white  font-pregular  italic
+        <Text className="text-md text-gray-500
+      dark:text-white  font-pregular  
         ">{description}</Text>
 
     </View>
