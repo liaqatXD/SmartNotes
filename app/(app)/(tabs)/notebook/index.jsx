@@ -11,7 +11,6 @@ import {useQuery} from "@tanstack/react-query";
 import {getNotebooks} from "../../../../api/notebook";
 
 const Notebook = () => {
-
     // React Query code, fetching notebooks
 const { isPending, isError, data:notebooks }=useQuery({
     queryKey:["notebooks"],
@@ -46,7 +45,8 @@ const { isPending, isError, data:notebooks }=useQuery({
      setIsNotebookModalVisible={setIsNotebookModalVisible}
        />
 
-     <View className="bg-primary flex-1  px-4 py-4 dark:bg-black-dark">
+     <View className="bg-primary flex-1  px-4 py-4
+      dark:bg-black-dark">
 
 
      <Setting />

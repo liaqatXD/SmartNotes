@@ -3,14 +3,15 @@ import { Pressable } from 'react-native';
 import { useColorScheme } from 'nativewind';
 import { SimpleLineIcons } from '@expo/vector-icons';
 import { AntDesign } from '@expo/vector-icons';
-const FloatingButton = ({choice,setIsNotebookModalVisible}) => {
+import { router } from 'expo-router';
+const FloatingButton = ({choice,setIsNotebookModalVisible,notebook}) => {
 
   const {colorScheme}=useColorScheme();
   const toggleNotebookModal=()=>{
     setIsNotebookModalVisible(true);
   }
   const addNote=()=>{
-    alert('add note');
+    router.push(`notebook/note/${notebook}`);
   }
   return (
     <View style={{position:"absolute", bottom:30,right:20,zIndex:1}}>

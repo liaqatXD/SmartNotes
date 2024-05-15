@@ -33,6 +33,7 @@ const Settings = () => {
     const logout=()=>{
         appwrite.logoutUser();
         queryClient.removeQueries("notebooks");
+        queryClient.removeQueries("notes");
         setIsLoggedIn(false);
         setUserSession("false");
     }

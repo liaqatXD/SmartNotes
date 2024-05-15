@@ -1,7 +1,7 @@
 import { object, string } from "yup"
 
 const notebookSchema = object({
-  title: string().max(20).required(),
+  title: string().max(30).required(),
   description: string().max(40),
 });
 

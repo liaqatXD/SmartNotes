@@ -6,6 +6,8 @@ export default function NotebookLayout() {
     <Stack>
       <Stack.Screen name="index" options={{headerShown:false}} />
       <Stack.Screen name="[notebook]" options={{headerShown:false}} />
+      <Stack.Screen name="note" options={{headerShown:false}} />
+
     </Stack>
   );
 }

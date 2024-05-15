@@ -36,3 +36,25 @@ export const getUser=async (email)=>{
         throw new Error(error.message);
       }
 }
+
+// updating user
+export const updateUser=async(user,email)=>{
+  try {
+      const response=  await fetch(`${BASE_URL}/${email}`,{
+          method:"PUT",
+          headers: {
+              'Content-Type': 'application/json'
+            },
+       body: JSON.stringify(user)
+      });
+
+      if (!response.ok) {
+        throw new Error('Network response was not ok while updating notebook.');
+      }
+   return await response.json();
+    
+      
+    } catch (error) {
+     throw new Error(error.message)
+    }
+}

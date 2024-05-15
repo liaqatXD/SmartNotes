@@ -2,14 +2,14 @@ import { View, Text,ScrollView, Pressable } from 'react-native'
 import { SafeAreaView } from 'react-native-safe-area-context';
 import Setting from '../../../components/Setting';
 import { Link } from 'expo-router';
-import { useState,useEffect } from 'react';
+import { useState,useEffect,useCallback } from 'react';
 import {getAccount} from "../../../asyncStorage";
+import { useFocusEffect } from 'expo-router';
 import { FontAwesome6 } from '@expo/vector-icons';
 
 const Home = () => {
-
-  useEffect(()=>{
- 
+  useFocusEffect(
+   useCallback(()=> {
     getAccount()
     .then((userData)=>{
         setNoOfNotes(userData.noOfNotes);
@@ -17,6 +17,15 @@ const Home = () => {
         setNoOfTasks(userData.noOfTasks);
       })
       .catch((err)=>console.log(err.message));
+   }))
+  useEffect(()=>{
+    // getAccount()
+    // .then((userData)=>{
+    //     setNoOfNotes(userData.noOfNotes);
+    //     setNoOfPomo(userData.pomodoroTimers);
+    //     setNoOfTasks(userData.noOfTasks);
+    //   })
+    //   .catch((err)=>console.log(err.message));
   })
 
   const [noOfNotes,setNoOfNotes]=useState('');
