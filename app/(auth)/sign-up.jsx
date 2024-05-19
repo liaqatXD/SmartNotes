@@ -65,7 +65,8 @@ const {appwrite,setIsLoggedIn}=useContext(AppwriteContext);
 
     <View style={styles.container}>
          <StatusBar style="light" backgroundColor='black' />
-      <ScrollView contentContainerStyle={styles.scrollViewContent}>
+      <ScrollView contentContainerStyle={styles.scrollViewContent}
+        keyboardShouldPersistTaps='handled'>
         <View style={styles.form}>
      {
       isLoading &&  <ActivityIndicator size={'large'} style={{position:'absolute'

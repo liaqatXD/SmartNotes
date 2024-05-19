@@ -5,7 +5,7 @@ import {useQueryClient} from "@tanstack/react-query"
 import { setUserSession } from '../../asyncStorage';
 import { useColorScheme } from "nativewind";
 import { setTheme } from '../../asyncStorage';
-import { getAccount } from '../../asyncStorage';
+import { getAccount,setToDo } from '../../asyncStorage';
 import { StatusBar } from 'expo-status-bar';
 import { Ionicons } from '@expo/vector-icons'; 
 import { Entypo } from '@expo/vector-icons';
@@ -26,6 +26,7 @@ const Settings = () => {
       })
       .catch((err)=>console.log(err.message));
       
+      
   },[])
   const [account,setAccount]=useState({});
   // const [darkMode,setDarkMode]=useState(false);
@@ -36,6 +37,7 @@ const Settings = () => {
         queryClient.removeQueries("notes");
         setIsLoggedIn(false);
         setUserSession("false");
+        setToDo(null);
     }
   return (
    (<View className="flex-1 p-6  bg-white dark:bg-black-light
@@ -95,10 +97,12 @@ const Settings = () => {
       <Switch value={colorScheme==='dark'}
     thumbColor={colorScheme==='light'?'black':'white'}
     trackColor={{false: colorScheme==='light'? 'black':'white', true: colorScheme==='dark'? 'white':'black'}}
-    onValueChange={()=>{
+    onValueChange={async ()=>{
       toggleColorScheme();
       if(colorScheme==='light') setTheme('dark');
       else setTheme('light');
+      
+      
     }} 
     />
     </View>

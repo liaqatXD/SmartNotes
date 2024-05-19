@@ -34,6 +34,9 @@ const EditNotebookModal = ({toggle,setIsEditModalVisible,notebook,setNotebookTit
       // Invalidate and refetch
       queryClient.invalidateQueries({ queryKey: ['notebooks'] })
     },
+    onError:(error)=>{
+      console.log('oh mo',error);
+    }
   });
     const handleEditNotebook=async ()=>{
 

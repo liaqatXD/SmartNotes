@@ -10,23 +10,31 @@ import { useColorScheme } from 'nativewind';
 import Toast from 'react-native-toast-message';
 
 
-const AddNotebook = ({toggle,setIsNotebookModalVisible}) => {
+const AddNotebook = ({toggle,setIsNotebookModalVisible,refetch}) => {
 
 
   const queryClient = useQueryClient();
   const {colorScheme}=useColorScheme();
   const [title,setTitle]=useState("");
   const [description,setDescription]=useState("");
-  const [isActive,setIsActive]=useState(undefined);
 
   // React query, adding notebook
   const addNotebookMutation = useMutation({
     mutationFn: (notebookObj)=>addNotebook(notebookObj),
     onSuccess: () => {
       // Invalidate and refetch
-      console.log('triggered')
-      queryClient.invalidateQueries({ queryKey: ['notebooks'] })
+      // console.log(data)
+      // refetch();
+      queryClient.invalidateQueries({ queryKey: ['notebooks'] });
+      queryClient.removeQueries({queryKey:['"notebooks"']});
+      // queryClient.invalidateQueries({
+      //   queryKey: ['notebooks'],
+      //   refetchType: 'all' // refetch both active and inactive queries
+      //  });
     },
+    onError:(error)=>{
+      console.log('error');
+    }
   })
     const handleNotebook=async ()=>{
 
@@ -48,11 +56,7 @@ const AddNotebook = ({toggle,setIsNotebookModalVisible}) => {
       }
       
     }
-const handleTextInputFocus = () => {
-    // Move cursor to the beginning of the text
-  setIsActive(undefined);
-  setTimeout(()=>setIsActive(true),100 );
-  };
+
   return (
    
       <Modal isVisible={toggle}
@@ -93,9 +97,8 @@ const handleTextInputFocus = () => {
              dark:text-white "
              >Description</Text>
                      <TextInput
-                     multiline={true}
-                     selection={isActive ? undefined : { start: 0 }}
-         onFocus={handleTextInputFocus}
+                    
+                     
                      textAlignVertical='top'
                      maxLength={40}
                      className="rounded-md p-4 text-lg font-pregular
@@ -112,7 +115,6 @@ const handleTextInputFocus = () => {
               text-white dark:bg-white  dark:text-black"
               >Add Notebook</Text>
             </Pressable>
-           {/* <Button onPress={handleNotebook} title="Add notebook" /> */}
         </View>
     </SafeAreaView>
       </Modal>

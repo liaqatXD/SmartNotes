@@ -12,17 +12,6 @@ import { getNotes } from '../../../../api/note';
 import EditNotebookModal from '../../../../components/EditNotebookModal';
 import NoteTemplate from '../../../../components/NoteTemplate';
 
-//generates preview
-const getPreview = (str) => {
-  // Split the string by whitespace
-  const words = str.split(' ');
-  
-  // Slice the array to get the first `numWords` elements and join them back into a string
-  const result = words.slice(0, 20).join(' ');
-  
-  return result;
-};
-
 
 
 const NotebookDetail = () => {
@@ -51,7 +40,8 @@ const { isPending, isError, data:notes,isFetching }=useQuery({
     notebook={notebook._id}
       />
 
-     <ScrollView contentContainerStyle={{flexGrow:1}} >
+     <ScrollView contentContainerStyle={{flexGrow:1}}
+       keyboardShouldPersistTaps='handled' >
 
 
       {/* Edit Notebook modal */}
@@ -96,11 +86,11 @@ isFetching && <Text className="font-pbold text-3xl"
  style={{zIndex:10}}>Loading...</Text>
    }
    {
-    isError && <Text>Error=/</Text>
+    isError && <Text>Error...</Text>
    }
    {
    !isFetching && notes?.map((note,index)=>{
-if(note.title.startsWith(search))
+if(note.title.toLowerCase().includes(search.toLowerCase()))
   return (
     <Link key={index} href={{pathname:`notebook/note/${note.title}`,params:{
       title:note.title,
@@ -110,7 +100,7 @@ if(note.title.startsWith(search))
    }}} asChild >
     <Pressable>
       <NoteTemplate title={note.title}
-       preview={note.content?getPreview(note.content):""} />
+       preview={note.content?note.content.slice(0,40).concat('...').replace(/\n/g, '. '):""} />
     </Pressable>
    </Link>
  )

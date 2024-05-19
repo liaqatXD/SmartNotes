@@ -21,6 +21,7 @@ export default function AppLayout() {
         } } 
           
           />
+           <Stack.Screen name="rewards" options={{headerShown:false}} />
     </Stack>
   );
 }

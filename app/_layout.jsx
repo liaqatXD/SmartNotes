@@ -7,6 +7,8 @@ import Toast from 'react-native-toast-message';
 import { useColorScheme } from "nativewind";
 import { getTheme } from "../asyncStorage";
 
+const queryClient = new QueryClient()
+
 const RootLayout = () => {
   SplashScreen.preventAutoHideAsync();
   const { colorScheme,toggleColorScheme } = useColorScheme();
@@ -34,7 +36,7 @@ const RootLayout = () => {
   if(!fontsLoaded && !error) return null;
 
   //React Query
-  const queryClient = new QueryClient()
+  // const queryClient = new QueryClient()
 
 
   return (

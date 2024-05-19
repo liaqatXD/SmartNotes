@@ -12,7 +12,7 @@ import {getNotebooks} from "../../../../api/notebook";
 
 const Notebook = () => {
     // React Query code, fetching notebooks
-const { isPending, isError, data:notebooks }=useQuery({
+const { isPending, isError, data:notebooks,isFetching,refetch }=useQuery({
     queryKey:["notebooks"],
     queryFn:getNotebooks
   });
@@ -28,7 +28,6 @@ const { isPending, isError, data:notebooks }=useQuery({
   //   return <Text>Error: {error.message}</Text>
   // }
 
-
   return (
     <SafeAreaView className="flex-1">
 
@@ -37,13 +36,14 @@ const { isPending, isError, data:notebooks }=useQuery({
       setIsNotebookModalVisible={setIsNotebookModalVisible}
       />
 
-     <ScrollView contentContainerStyle={{flexGrow:1}}>
+     <ScrollView contentContainerStyle={{flexGrow:1}}
+       keyboardShouldPersistTaps='handled'>
 
 
       {/* Add Notebook modal */}
      <AddNotebook toggle={isNotebookModalVisible} 
      setIsNotebookModalVisible={setIsNotebookModalVisible}
-       />
+     refetch={refetch}  />
 
      <View className="bg-primary flex-1  px-4 py-4
       dark:bg-black-dark">
@@ -70,15 +70,15 @@ const { isPending, isError, data:notebooks }=useQuery({
 
       {/* Notebooks */}
    {
-isPending && <Text className="font-pbold text-3xl"
+isFetching && <Text className="font-pbold text-3xl"
  style={{zIndex:10}}>Loading...</Text>
    }
    {
     isError && <Text>Error=/</Text>
    }
    {
-    notebooks?.map((notebook,index)=>{
-if(notebook.title.startsWith(search))
+  !isFetching &&  notebooks?.map((notebook,index)=>{
+if(notebook.title.toLowerCase().includes(search.toLowerCase()))
   return (
     <Link key={index} href={{pathname:`notebook/${notebook.title}`,params:{title:notebook.title,
      description:notebook.description,

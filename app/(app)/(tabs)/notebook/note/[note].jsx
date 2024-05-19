@@ -153,7 +153,8 @@ const Note = () => {
     <SafeAreaView className="flex-1">
 
     
-     <ScrollView contentContainerStyle={{flexGrow:1}} >
+     <ScrollView contentContainerStyle={{flexGrow:1}} 
+     keyboardShouldPersistTaps='handled'>
 
     <View className="bg-primary flex-1 
      dark:bg-black">

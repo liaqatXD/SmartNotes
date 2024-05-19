@@ -1,4 +1,5 @@
-import { getAccount } from "../asyncStorage";
+import { getAccount, setAccount } from "../asyncStorage";
+import { updateUser } from "./user";
 const BASE_URL="http://192.168.1.28:8000/api/notebooks";
 
 //get all notebooks
@@ -76,8 +77,14 @@ export const deleteNotebook=async({_id})=>{
         if (!response.ok) {
           throw new Error('Network response was not ok while deleting notebook.');
         }
-     return await response.json();
-      
+        //async logic to keep notes account updated
+    //  return await response.json();
+        const {deletedCount}=await response.json();
+     const user=await getAccount();
+     user.noOfNotes-=deletedCount;
+     updateUser(user,user.email);
+     setAccount(user);
+    return {"success":"notebook deleted successfully!"};
         
       } catch (error) {
        throw new Error(error.message)

@@ -96,3 +96,27 @@ export const getUserSession = async () => {
     
     }
   };
+
+  // storing user tasks
+
+  export const setToDo = async (value) => {
+    try {
+  const toDo = JSON.stringify(value);
+  await AsyncStorage.setItem('to-do', toDo);
+    } catch (e) {
+      // saving error
+      throw new Error(`Error while setting toDo: ${e.message}`)
+
+    }
+  };
+
+  export const getToDo = async () => {
+    try {
+    const toDo=   await AsyncStorage.getItem('to-do');
+       return toDo != null ? JSON.parse(toDo) : null;
+    
+    } catch (e) {
+        throw new Error(`Error while getting toDo: ${e.message}`)
+    
+    }
+  };
