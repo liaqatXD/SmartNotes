@@ -1,4 +1,5 @@
 const BASE_URL="http://192.168.1.28:8000/api/notes";
+import Toast from "react-native-toast-message";
 import { getAccount,setAccount } from "../asyncStorage";
 import { updateUser } from "./user";
 //get all notes
@@ -34,6 +35,67 @@ export const addNote=async({title,content,notebook})=>{
       //async storage logic, incrementing notes
     const user=await getAccount();
     user.noOfNotes+=1;
+
+    //badge logic
+    if(user.noOfNotes===1 && user.noOfBadges===0){
+      user.noOfBadges+=1;
+      Toast.show({
+        type: 'success',
+        text1: 'Congratulations 🎉',
+        text2:"You have unlocked a new badge🏅",
+        visibilityTime:1500
+      });
+    }
+
+   else  if(user.noOfNotes===10 && user.noOfBadges===1){
+      user.noOfBadges+=1;
+      Toast.show({
+        type: 'success',
+        text1: 'Congratulations 🎉',
+        text2:"You have unlocked a new badge🏅",
+        visibilityTime:1500
+      });
+    }
+
+  else  if(user.noOfNotes===50 && user.noOfBadges===2){
+      user.noOfBadges+=1;
+      Toast.show({
+        type: 'success',
+        text1: 'Congratulations 🎉',
+        text2:"You have unlocked a new badge🏅",
+        visibilityTime:1500
+      });
+    }
+
+ else if(user.noOfNotes===100 && user.noOfBadges===3){
+      user.noOfBadges+=1;
+      Toast.show({
+        type: 'success',
+        text1: 'Congratulations 🎉',
+        text2:"You have unlocked a new badge🏅",
+        visibilityTime:1500
+      });
+    }
+
+  else if(user.noOfNotes===500 && user.noOfBadges===4){
+      user.noOfBadges+=1;
+      Toast.show({
+        type: 'success',
+        text1: 'Congratulations 🎉',
+        text2:"You have unlocked a new badge🏅",
+        visibilityTime:1500
+      });
+    }
+    else if(user.noOfNotes===1000 && user.noOfBadges===5){
+      user.noOfBadges+=1;
+      Toast.show({
+        type: 'success',
+        text1: 'Congratulations 🎉',
+        text2:"You have unlocked a new badge🏅",
+        visibilityTime:1500
+      });
+    }
+
      updateUser(user,user.email);
     setAccount(user);
    return await response.json();
@@ -80,7 +142,7 @@ export const deleteNote=async({_id})=>{
       }
       //async storage logic, incrementing notes
     const user=await getAccount();
-    user.noOfNotes-=1;
+   if(user.noOfNotes>0) user.noOfNotes-=1;
      updateUser(user,user.email);
     setAccount(user);
    return await response.json();
