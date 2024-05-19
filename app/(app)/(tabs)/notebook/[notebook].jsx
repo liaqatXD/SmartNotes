@@ -65,7 +65,7 @@ const { isPending, isError, data:notes,isFetching }=useQuery({
       <View className="flex-row gap-2 items-center">
         <Text className=" font-pregular text-2xl dark:text-white ">
           {notebookTitle}</Text>
-        <Text className="text-2xl bg-green-500
+        <Text className="text-2xl bg-purple-600
         text-white h-12 w-12 py-2 text-center rounded-full font-pregular ">{isFetching?0:notes?.length || 0}</Text>
       </View>
 

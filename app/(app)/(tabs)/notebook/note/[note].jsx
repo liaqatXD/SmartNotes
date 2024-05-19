@@ -1,4 +1,4 @@
-import { View,ScrollView ,TextInput,Pressable} from 'react-native'
+import { View,ScrollView,Text ,TextInput,Pressable,Image,Modal as Pop} from 'react-native'
 import { useState,useEffect } from 'react';
 import { useQueryClient,useMutation } from '@tanstack/react-query';
 import Markdown from 'react-native-markdown-display';
@@ -6,15 +6,17 @@ import { SafeAreaView, } from 'react-native-safe-area-context';
 import { addNote, updateNote,deleteNote} from '../../../../../api/note';
 import { useLocalSearchParams,router } from 'expo-router';
 import { validateNote } from '../../../../../validations/note';
-import { MaterialCommunityIcons } from '@expo/vector-icons';
+// import { MaterialCommunityIcons } from '@expo/vector-icons';
 import { Ionicons } from '@expo/vector-icons';
-import { Entypo } from '@expo/vector-icons';
-import { MaterialIcons } from '@expo/vector-icons';
+// import { Entypo } from '@expo/vector-icons';
+// import { MaterialIcons } from '@expo/vector-icons';
 import { useColorScheme } from "nativewind";
 import Toast from 'react-native-toast-message';
 import themes from "../../../../../markdownStyles";
-
-
+const saveImg=require("../../../../../assets/images/save.png");
+const delImg=require("../../../../../assets/images/delete-file.png");
+const glassImg=require("../../../../../assets/images/3d-glasses.png");
+const editImg=require("../../../../../assets/images/edit-file.png");
 
 // generates current data and time
 const getCurrentDateTime = () => {
@@ -42,6 +44,9 @@ const getCurrentDateTime = () => {
 const Note = () => {
   const queryClient = useQueryClient();
   const note=useLocalSearchParams();
+  //modified code
+  const [showConfirmation,setShowConfirmation]=useState(false);
+
 
     // create note
   const saveNoteMutation = useMutation({
@@ -76,7 +81,6 @@ const Note = () => {
    
     router.back();
     
-
   },
   onError: (error) => {
    console.log(error)
@@ -157,32 +161,51 @@ const Note = () => {
      keyboardShouldPersistTaps='handled'>
 
     <View className="bg-primary flex-1 
-     dark:bg-black">
+     dark:bg-black-dark">
       {/* icons */}
       <View className="flex-row  items-center justify-between p-4">
 
         {/* back button */}
         <Pressable onPress={()=>router.back()}>
-          <Ionicons name="arrow-back-sharp" size={35} color={colorScheme==='light'?'black':'white'} />
+          {/* <Ionicons name="arrow-back-sharp" size={35} color={colorScheme==='light'?'black':'white'} /> */}
+          <Ionicons name="chevron-back-outline" size={35}
+        color={colorScheme==='light'?'black':'white'} />
         </Pressable>
 
-        <View className="flex-row gap-x-5 items-baseline">
+        <View className="flex-row gap-x-5 items-center">
          
          {/* delete */}
-          <Pressable onPress={handleDeleteNote}>
-            <MaterialIcons name="delete" size={35} color={colorScheme==='light'?'black':'white'} />
+          <Pressable onPress={()=>setShowConfirmation(true)}>
+            {/* <MaterialIcons name="delete" size={35} color={colorScheme==='light'?'black':'white'} /> */}
+            <Image 
+            source={delImg}
+          style={{width:32,height:32}}
+            />
           </Pressable>
          
          {/* cloud  */}
           <Pressable onPress={handleUpdateNote}>
-            <Entypo name="upload-to-cloud" size={35} color={colorScheme==='light'?'black':'white'} />
+            {/* <Entypo name="upload-to-cloud" size={35} color={colorScheme==='light'?'black':'white'} /> */}
+            <Image 
+            source={saveImg}
+          style={{width:30,height:30}}
+            />
           </Pressable>
             
             {/* glasses/edit */}
               <Pressable onPress={ ()=>setShowMarkdown(!showMarkdown)}>
               {
-                showMarkdown?<Entypo name="pencil" size={35} color={colorScheme==='light'?'black':'white'}  />: <MaterialCommunityIcons name="sunglasses" size={35} 
+                showMarkdown?/*<Entypo name="pencil" size={35} color={colorScheme==='light'?'black':'white'}  />*/
+                <Image 
+                source={editImg}
+              style={{width:34,height:34}}
+                />
+                : /*<MaterialCommunityIcons name="sunglasses" size={35} 
                 color={colorScheme==='light'?'black':'white'}
+                />*/
+                <Image 
+                source={glassImg}
+              style={{width:45,height:50}}
                 />
               } 
               </Pressable>
@@ -193,7 +216,9 @@ const Note = () => {
       {/* Note title */}
  <View className=" px-4 mb-5">
    <TextInput  placeholder='Note Title'
+   placeholderTextColor={'grey'}
     color={colorScheme==='light'?'black':'white'}
+    
    className="pt-3  font-pmedium text-lg dark:border-white"
    style={{borderBottomWidth:1}} value={noteTitle}
    onChangeText={(value)=>setNoteTitle(value)}
@@ -227,7 +252,40 @@ const Note = () => {
   
 }
 
+{/* Pop-up */}
+<Pop
+          animationType="slide"
+          transparent={true}
+          visible={showConfirmation}
+          onRequestClose={() => setShowConfirmation(false)}
+          >
+            <View className=" flex-1 justify-center items-center">
+              <View className="bg-black-usual w-10/12 rounded-lg 
+              py-8 px-6">
 
+          <Text className="text-white font-pregular 
+          text-lg text-center">
+           Do you really want to delete this note?</Text>
+
+          {/* Buttons */}
+          <View className="mt-7 flex-row justify-between">
+            {/* Cancel */}
+            <Pressable onPress={()=>setShowConfirmation(false)}>
+            <Text className="text-lg text-white uppercase">Cancel</Text>
+            </Pressable>
+            {/* Delete */}
+            <Pressable onPress={()=>{
+              setShowConfirmation(false);
+              handleDeleteNote();
+            }}>
+            <Text className="text-lg text-white uppercase">Delete</Text>
+            </Pressable>
+
+          </View>
+
+              </View>
+            </View>
+          </Pop>
 
 </View>
 

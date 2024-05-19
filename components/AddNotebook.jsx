@@ -32,9 +32,9 @@ const AddNotebook = ({toggle,setIsNotebookModalVisible,refetch}) => {
       //   refetchType: 'all' // refetch both active and inactive queries
       //  });
     },
-    onError:(error)=>{
-      console.log('error');
-    }
+    // onError:(error)=>{
+    //   console.log('error');
+    // }
   })
     const handleNotebook=async ()=>{
 
@@ -75,7 +75,7 @@ const AddNotebook = ({toggle,setIsNotebookModalVisible,refetch}) => {
         </Pressable>
         {/* Add notebook */}
           <Text className='text-4xl font-psemibold
-          dark:text-white upp text-center
+          dark:text-white text-center
           '>Add Notebook</Text>
           {/* Title */}
           <View className="my-4 gap-y-2">
@@ -96,9 +96,7 @@ const AddNotebook = ({toggle,setIsNotebookModalVisible,refetch}) => {
              className="text-lg font-plight uppercase
              dark:text-white "
              >Description</Text>
-                     <TextInput
-                    
-                     
+                     <TextInput  
                      textAlignVertical='top'
                      maxLength={40}
                      className="rounded-md p-4 text-lg font-pregular

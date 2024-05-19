@@ -5,7 +5,7 @@ import { useColorScheme } from 'nativewind';
 import { Ionicons } from '@expo/vector-icons';
 import { useEffect, useState } from 'react';
 import {getAccount} from "../../asyncStorage";
-
+const zeroBadge=require("../../assets/images/no-results.png")
 
 const rewards=[
   {
@@ -76,28 +76,45 @@ useEffect(()=>{
         </View>
 
             {/* badges */}
- 
-            <View className="px-20 py-12">
+
             {
-              rewards.slice(0,noOfBadges).map((badge)=><View key={badge.id}
-              className="bg-black-200 h-52 w-52 rotate-45
-              dark:bg-black-light
-              my-12
-             self-end
-             
-              justify-center 
-              rounded-lg items-center  ">
-                <View  className="-rotate-45 gap-2">
-                  <Image source={badge.image}
-                  style={{width:120,height:120}} />
-                      <Text className="text-white
-                      text-center font-pmedium text-lg">{badge.title}🎖</Text>
-                </View>
+              noOfBadges>0?  <View className="px-20 py-12">
+              {
+                rewards.slice(0,noOfBadges).map((badge)=><View key={badge.id}
+                className="bg-black-200 h-52 w-52 rotate-45
+                dark:bg-black-light
+                my-12
+               self-end
                
-                </View>    
-                )
+                justify-center 
+                rounded-lg items-center  ">
+                  <View  className="-rotate-45 gap-2">
+                    <Image source={badge.image}
+                    style={{width:120,height:120}} />
+                        <Text className="text-white
+                        text-center font-pmedium text-lg">{badge.title}🎖</Text>
+                  </View>
+                 
+                  </View>    
+                  )
+              }
+              </View> :  //no badges found
+              <View className='flex-1 justify-center
+              items-center'> 
+              <Image source={zeroBadge} 
+              style={
+                {
+                  width:300,
+                  height:300
+                }
+              }
+              />
+              <Text
+              className="text-lg font-pregular dark:text-white"
+              >No Badges Available</Text>
+              </View>
             }
-            </View>
+           
             
 
 
