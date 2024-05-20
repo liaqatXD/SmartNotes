@@ -1,17 +1,18 @@
-import { View, Text,ScrollView ,TextInput,Pressable} from 'react-native'
+import { View, Text,ScrollView ,TextInput,Pressable,Image} from 'react-native'
 import { useState } from 'react';
 import { useQuery } from '@tanstack/react-query';
 import { SafeAreaView, } from 'react-native-safe-area-context';
 import { useColorScheme } from "nativewind";
 import { Entypo } from '@expo/vector-icons';
 import { Ionicons } from '@expo/vector-icons';
-import { AntDesign } from '@expo/vector-icons';
+import { Skeleton } from 'moti/skeleton';
 import FloatingButton from "../../../../components/FloatingButton";
 import { useLocalSearchParams, Link} from 'expo-router';
 import { getNotes } from '../../../../api/note';
 import EditNotebookModal from '../../../../components/EditNotebookModal';
 import NoteTemplate from '../../../../components/NoteTemplate';
 
+const emptyImg=require("../../../../assets/images/empty-box.png");
 
 
 const NotebookDetail = () => {
@@ -58,15 +59,29 @@ const { isPending, isError, data:notes,isFetching }=useQuery({
 
      {/* Edit notebook */}
      <Pressable onPress={()=>setIsEditModalVisible(true)}>
-       <Entypo name="pencil" size={40} color={colorScheme==='light'?'black':'white'} style={{alignSelf:"flex-end",margin:5}} />
+
+    <Entypo name="pencil" size={40} color={colorScheme==='light'?'black':'white'} style={{alignSelf:"flex-end",margin:5}} />
      </Pressable>
 
      {/* Notebook Title */}
-      <View className="flex-row gap-2 items-center">
-        <Text className=" font-pregular text-2xl dark:text-white ">
+      <View className="flex-row gap-x-4 items-center">
+        <Text className=" font-pregular text-2xl dark:text-white 
+        mr-2">
           {notebookTitle}</Text>
-        <Text className="text-2xl bg-purple-600
-        text-white h-12 w-12 py-2 text-center rounded-full font-pregular ">{isFetching?0:notes?.length || 0}</Text>
+        <Skeleton show={isFetching} radius={'round'}
+        colorMode={colorScheme}
+        transition={{
+          type:"timing",
+          "duration":1000
+        }}
+      
+        >
+          <Text className="text-2xl bg-purple-600
+          text-white h-12 w-12 py-2 text-center
+     
+          rounded-full font-pregular ">
+            {isFetching?0:notes?.length}</Text>
+        </Skeleton>
       </View>
 
       {/* Search */}
@@ -81,9 +96,18 @@ const { isPending, isError, data:notes,isFetching }=useQuery({
       </View>
 
          {/* Notes */}
-   {
-isFetching && <Text className="font-pbold text-3xl"
- style={{zIndex:10}}>Loading...</Text>
+         {
+isFetching && <Skeleton show={isFetching}
+colorMode={colorScheme}
+width="100%"
+height={80}
+transition={{
+  type:"timing",
+  "duration":2000
+}}
+>
+
+</Skeleton>
    }
    {
     isError && <Text>Error...</Text>
@@ -109,10 +133,15 @@ if(note.title.toLowerCase().includes(search.toLowerCase()))
 
    {/* No notes found */}
 {
-  !isFetching && notes?.length===0 && <View>
-    <AntDesign name="frowno" size={120} color={colorScheme==='light'?'lightgrey':'lightgrey'}  style={{textAlign:"center",marginVertical:20}} />
+  !isFetching && notes?.length===0 && <View className="flex-1 
+  items-center gap-2 justify-center">
+    {/* <AntDesign name="frowno" size={120} color={colorScheme==='light'?'lightgrey':'lightgrey'}  style={{textAlign:"center",marginVertical:20}} />
     <Text className="text-center text-2xl font-pmedium
-    dark:text-white">No Notes Found</Text>
+    dark:text-white">No Notes Found</Text> */}
+    <Image source={emptyImg} style={{width:"40%",height:"40%"}} />
+    <Text className="text-center text-2xl font-pregular
+    dark:text-white">No Notes Found</Text> 
+
   </View>
 }
     </View>

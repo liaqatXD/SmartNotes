@@ -8,6 +8,8 @@ import AddNotebook from '../../../../components/AddNotebook';
 import NotebookTemplate from '../../../../components/NotebookTemplate';
 import { Link } from 'expo-router';
 import {useQuery} from "@tanstack/react-query";
+import { Skeleton } from 'moti/skeleton';
+import { useColorScheme } from 'nativewind';
 import {getNotebooks} from "../../../../api/notebook";
 
 const Notebook = () => {
@@ -19,6 +21,7 @@ const { isPending, isError, data:notebooks,isFetching,refetch }=useQuery({
 
   const [isNotebookModalVisible,setIsNotebookModalVisible]=useState(false);
   const [search,setSearch]=useState("");
+  const {colorScheme}=useColorScheme();
 
   // if (isPending) {
   //   return <Text>Loading...</Text>
@@ -51,10 +54,22 @@ const { isPending, isError, data:notebooks,isFetching,refetch }=useQuery({
 
      <Setting />
      {/* Notebooks Title */}
+     {/* modified code */}
       <View className="flex-row gap-2 items-center">
-        <Text className=" font-pregular text-3xl dark:text-white ">Notebooks</Text>
-        <Text className="text-3xl bg-orange-custom 
-        text-white h-16 w-16 pt-4 text-center rounded-full font-pregular ">{notebooks?.length || 0}</Text>
+        <Text className=" font-pregular text-3xl dark:text-white mr-2">Notebooks</Text>
+        <Skeleton show={isFetching}
+        colorMode={colorScheme}
+        radius={'round'}
+        transition={{
+          type:"timing",
+          "duration":2000
+        }}
+        >
+          <Text className="text-3xl bg-orange-custom
+          text-white h-16 w-16 pt-4
+          text-center rounded-full
+           font-pregular ">{notebooks?.length}</Text>
+        </Skeleton>
       </View>
 
       {/* Search */}
@@ -70,11 +85,20 @@ const { isPending, isError, data:notebooks,isFetching,refetch }=useQuery({
 
       {/* Notebooks */}
    {
-isFetching && <Text className="font-pbold text-3xl"
- style={{zIndex:10}}>Loading...</Text>
+isFetching && <Skeleton show={isFetching}
+colorMode={colorScheme}
+width="100%"
+height={110}
+transition={{
+  type:"timing",
+  "duration":2000
+}}
+>
+
+</Skeleton>
    }
    {
-    isError && <Text>Error=/</Text>
+    isError && <Text>Error</Text>
    }
    {
   !isFetching &&  notebooks?.map((notebook,index)=>{
