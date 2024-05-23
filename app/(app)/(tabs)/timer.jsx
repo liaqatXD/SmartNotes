@@ -163,7 +163,7 @@ const PomodoroTimer = () => {
 const timerOptions = [
 
   {
-    label: '10s',
+    label: '6s',
     duration: 0.10 * 60
   }
   ,{

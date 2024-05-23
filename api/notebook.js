@@ -1,7 +1,7 @@
 import { getAccount, setAccount } from "../asyncStorage";
 import { updateUser } from "./user";
+// const BASE_URL="http://192.168.43.172:8000/api/notebooks";
 const BASE_URL="http://192.168.1.28:8000/api/notebooks";
-
 //get all notebooks
 export const getNotebooks=async()=>{
     try {
@@ -13,7 +13,9 @@ export const getNotebooks=async()=>{
     return await response.json();
       
         
-      } catch (error) {
+      } catch (error) 
+      {
+        console.log(error.message);
         throw new Error(error.message);
       }
 }
@@ -21,7 +23,7 @@ export const getNotebooks=async()=>{
 //post a notebook
 export const addNotebook=async({title,description})=>{
     try {
-        const {_id}=await getAccount();
+      const {_id}=await getAccount();
         const response=  await fetch(BASE_URL,{
             method:"POST",
             headers: {
@@ -37,6 +39,7 @@ export const addNotebook=async({title,description})=>{
       
         
       } catch (error) {
+        console.log(error.message)
        throw new Error(error.message)
       }
 }

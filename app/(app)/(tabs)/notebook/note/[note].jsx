@@ -6,7 +6,7 @@ import { SafeAreaView, } from 'react-native-safe-area-context';
 import { addNote, updateNote,deleteNote} from '../../../../../api/note';
 import { useLocalSearchParams,router } from 'expo-router';
 import { validateNote } from '../../../../../validations/note';
-// import { MaterialCommunityIcons } from '@expo/vector-icons';
+import Loading from '../../../../../components/Loading';
 import { Ionicons } from '@expo/vector-icons';
 // import { Entypo } from '@expo/vector-icons';
 // import { MaterialIcons } from '@expo/vector-icons';
@@ -17,6 +17,10 @@ const saveImg=require("../../../../../assets/images/save.png");
 const delImg=require("../../../../../assets/images/delete-file.png");
 const glassImg=require("../../../../../assets/images/3d-glasses.png");
 const editImg=require("../../../../../assets/images/edit-file.png");
+const sendImg=require("../../../../../assets/images/send.png");
+import { printToFileAsync } from 'expo-print';
+import { shareAsync } from 'expo-sharing';
+import showdown from "showdown"
 
 // generates current data and time
 const getCurrentDateTime = () => {
@@ -101,7 +105,7 @@ const Note = () => {
       // setNotebook(note.notebook);
       setNoteId(note._id);
     }
-  },[])
+  },[isLoading])
 
   //handling update note
   const handleUpdateNote=async ()=>{
@@ -138,9 +142,13 @@ const Note = () => {
     });
   }
 
+
+
+
   //states
     const {colorScheme}=useColorScheme();
     const [showMarkdown,setShowMarkdown]=useState(false);
+    const [isLoading,setIsLoading]=useState(false);
     const [noteTitle,setNoteTitle]=useState("");
     const [noteContent,setNoteContent]=useState("");
     const [noteId,setNoteId]=useState("");
@@ -153,6 +161,51 @@ const Note = () => {
     setTimeout(()=>setIsActive(true),100 );
     };
 
+    //sharing notes
+    const shareNote=async()=>{
+      if(noteContent===''){
+        Toast.show({
+          type: 'info',
+          text1:"Empty File",
+          text2:"You can not share an empty file",
+          visibilityTime:2000
+        });
+      }
+      else{
+        setIsLoading(true);
+        const  converter = new showdown.Converter();
+        const  md  = converter.makeHtml(noteContent);
+        const html=`
+        <html lang="en">
+        <head>
+          <meta charset="UTF-8" />
+          <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+          <title>${noteTitle}</title>
+          <style>
+         
+        html{
+        padding:10px
+        }
+       
+          </style>
+        </head>
+        <body>
+          ${md}
+        </body>
+        </html>
+        `
+        
+      const file = await printToFileAsync({
+        html,
+        base64: false
+      });
+  
+      await shareAsync(file.uri);
+      setIsLoading(false);
+
+      }
+      
+    }
   return (
     <SafeAreaView className="flex-1">
 
@@ -162,6 +215,10 @@ const Note = () => {
 
     <View className="bg-primary flex-1 
      dark:bg-black-dark">
+
+      {/* Loading */}
+      {isLoading &&     <Loading />}
+
       {/* icons */}
       <View className="flex-row  items-center justify-between p-4">
 
@@ -172,7 +229,14 @@ const Note = () => {
         color={colorScheme==='light'?'black':'white'} />
         </Pressable>
 
+      
         <View className="flex-row gap-x-5 items-center">
+
+            {/* share button */}
+        <Pressable onPress={shareNote}>
+          <Image source={sendImg}  style={{width:32,height:32}} />
+        </Pressable>
+
          
          {/* delete */}
           <Pressable onPress={()=>setShowConfirmation(true)}>

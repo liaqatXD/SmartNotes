@@ -1,4 +1,5 @@
 // adding user to database
+// const BASE_URL="http://192.168.43.172:8000/api/users";
 const BASE_URL="http://192.168.1.28:8000/api/users";
 
 export const addUser= async (username,email)=>{

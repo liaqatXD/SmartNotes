@@ -3,7 +3,7 @@ import { View } from 'react-native'
 
 const Loading = () => {
   return (
-    <View style={{flex:1,justifyContent:"center"}}>
+    <View style={{position:"absolute",left:"45%",top:"50%"}}>
       <ActivityIndicator size='2' />
     </View>
   )

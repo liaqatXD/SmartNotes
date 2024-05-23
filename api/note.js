@@ -1,3 +1,4 @@
+// const BASE_URL="http://192.168.43.172:8000/api/notes";
 const BASE_URL="http://192.168.1.28:8000/api/notes";
 import Toast from "react-native-toast-message";
 import { getAccount,setAccount } from "../asyncStorage";

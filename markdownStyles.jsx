@@ -10,12 +10,12 @@ import { StyleSheet } from "react-native";
 
     heading1:{
      fontFamily:"Poppins-Bold",
-     fontSize:35
+     fontSize:33
 
     },
     heading2:{
         fontFamily:"Poppins-Bold",
-        fontSize:33
+        fontSize:30
        },
      heading3:{
         fontFamily:"Poppins-Bold",
@@ -66,12 +66,12 @@ import { StyleSheet } from "react-native";
 
     heading1:{
      fontFamily:"Poppins-Bold",
-     fontSize:35
+     fontSize:33
 
     },
     heading2:{
         fontFamily:"Poppins-Bold",
-        fontSize:33
+        fontSize:30
        },
      heading3:{
         fontFamily:"Poppins-Bold",
