@@ -13,13 +13,20 @@ import { Ionicons } from '@expo/vector-icons';
 import { useColorScheme } from "nativewind";
 import Toast from 'react-native-toast-message';
 import themes from "../../../../../markdownStyles";
+
+// images
+
 const saveImg=require("../../../../../assets/images/save.png");
 const delImg=require("../../../../../assets/images/delete-file.png");
 const glassImg=require("../../../../../assets/images/3d-glasses.png");
 const editImg=require("../../../../../assets/images/edit-file.png");
 const sendImg=require("../../../../../assets/images/send.png");
+const searchImg=require("../../../../../assets/images/search.png");
+const crossImg=require("../../../../../assets/images/cross.png");
+
 import { printToFileAsync } from 'expo-print';
 import { shareAsync } from 'expo-sharing';
+import HighlightText from '@sanar/react-native-highlight-text';
 import showdown from "showdown"
 
 // generates current data and time
@@ -152,9 +159,9 @@ const Note = () => {
     const [noteTitle,setNoteTitle]=useState("");
     const [noteContent,setNoteContent]=useState("");
     const [noteId,setNoteId]=useState("");
-    // const [notebook,setNotebook]=useState("");
   const [isActive,setIsActive]=useState(undefined);
-
+  const [showSearch,setShowSearch]=useState(false);
+  const [search,setSearch]=useState("");
     const handleTextInputFocus = () => {
       // Move cursor to the beginning of the text
     setIsActive(undefined);
@@ -206,9 +213,14 @@ const Note = () => {
       }
       
     }
+    // searching note
+    const searchNote=()=>{
+   setShowSearch(true);
+    }
   return (
     <SafeAreaView className="flex-1">
-
+ {/* Loading */}
+ {isLoading &&     <Loading />}
     
      <ScrollView contentContainerStyle={{flexGrow:1}} 
      keyboardShouldPersistTaps='handled'>
@@ -216,10 +228,9 @@ const Note = () => {
     <View className="bg-primary flex-1 
      dark:bg-black-dark">
 
-      {/* Loading */}
-      {isLoading &&     <Loading />}
+     
 
-      {/* icons */}
+      {/* buttons(icons) */}
       <View className="flex-row  items-center justify-between p-4">
 
         {/* back button */}
@@ -230,8 +241,36 @@ const Note = () => {
         </Pressable>
 
       
-        <View className="flex-row gap-x-5 items-center">
+     {showSearch?
+     <View className="flex-row justify-between items-center"> 
+    <TextInput 
+    onChangeText={(value)=>setSearch(value)}
+    placeholder='Search....'
+    placeholderTextColor={'grey'}
+    value={search}
+    style={{
+      borderWidth:1,
+      borderColor:colorScheme==='light'?'black':'white',
+      width:"80%",
+      color:colorScheme==='light'?'black':'white',
+      padding:10,
+      borderRadius:10,
+      fontFamily:"Poppins-Bold"
+    }} />
+    <Pressable onPress={()=>{
+      setShowSearch(false);
+      setSearch("");
+    }}>
+      <Image source={crossImg}  style={{width:32,height:32}} />
+    </Pressable>
 
+      </View>:
+     <View className="flex-row gap-x-5 items-center">
+
+          {/* search button */}
+          <Pressable onPress={searchNote}>
+          <Image source={searchImg}  style={{width:32,height:32}} />
+          </Pressable>
             {/* share button */}
         <Pressable onPress={shareNote}>
           <Image source={sendImg}  style={{width:32,height:32}} />
@@ -274,7 +313,7 @@ const Note = () => {
               } 
               </Pressable>
         </View>
-
+}
       </View>
 
       {/* Note title */}
@@ -290,30 +329,49 @@ const Note = () => {
  </View>
 
 {/* Note editor */}
-<View className="flex-1 px-4"> 
+<View className="flex-1 px-4 pb-8"> 
 
-{/* markdown */
-  
-  showMarkdown? <Markdown
-  style={colorScheme==='light'?themes.lightTheme:themes.darkTheme}
-  >{noteContent}</Markdown>:  <TextInput
-       inputMode='text'
-       color={colorScheme==='light'?'black':'white'}
-       textAlignVertical='top'
-        selection={isActive ? undefined : { start: 0 }}
-       onFocus={handleTextInputFocus}
-        multiline={true}
-         style={{flex:1,
+{/* search note content */}
+
+{showSearch && <Text  style={{flex:1,
           paddingHorizontal:4,
           marginHorizontal:4,
-          
          }}
-         className="font-pregular text-lg"
-        onChangeText={(value)=>setNoteContent(value)} 
-        value={noteContent}>
-        </TextInput>
+         className="font-pregular text-lg dark:text-white">
+  <HighlightText
+    highlightStyle={{ backgroundColor: 'yellow',color:"black"}}
+    searchWords={[search]}
+    textToHighlight={noteContent}
+  />;
+</Text>
+}
+{/* markdown */
   
-  
+  !showSearch && showMarkdown && <Markdown 
+  style={colorScheme==='light'?themes.lightTheme:themes.darkTheme}
+  >{noteContent}</Markdown>
+
+}
+
+{
+ // note content editor
+ !showSearch && !showMarkdown && <TextInput
+ inputMode='text'
+ color={colorScheme==='light'?'black':'white'}
+ textAlignVertical='top'
+  selection={isActive ? undefined : { start: 0 }}
+ onFocus={handleTextInputFocus}
+  multiline={true}
+   style={{flex:1,
+    paddingHorizontal:4,
+    marginHorizontal:4,
+    
+   }}
+   className="font-pregular text-lg"
+  onChangeText={(value)=>setNoteContent(value)} 
+  value={noteContent}>
+  </TextInput>
+
 }
 
 {/* Pop-up */}

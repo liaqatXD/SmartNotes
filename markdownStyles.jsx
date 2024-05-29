@@ -7,32 +7,36 @@ import { StyleSheet } from "react-native";
         fontSize:18
 
     },
+    paragraph: {
+      marginTop:0,
+      marginBottom: 5,
+    },
 
     heading1:{
      fontFamily:"Poppins-Bold",
-     fontSize:33
+     fontSize:30
 
     },
     heading2:{
         fontFamily:"Poppins-Bold",
-        fontSize:30
+        fontSize:28
        },
      heading3:{
         fontFamily:"Poppins-Bold",
-        fontSize:28
+        fontSize:25
        },
        heading4:{
         fontFamily:"Poppins-Bold",
-        fontSize:25
+        fontSize:22
 
        },
        heading5:{
         fontFamily:"Poppins-Bold",
-        fontSize:22
+        fontSize:20
        },
        heading6:{
         fontFamily:"Poppins-Bold",
-        fontSize:20
+        fontSize:18
        },
        hr:{
         backgroundColor:"black"
@@ -63,32 +67,36 @@ import { StyleSheet } from "react-native";
         fontSize:18
 
     },
+    paragraph: {
+      marginTop:0,
+      marginBottom: 5,
+    },
 
     heading1:{
      fontFamily:"Poppins-Bold",
-     fontSize:33
+     fontSize:30
 
     },
     heading2:{
         fontFamily:"Poppins-Bold",
-        fontSize:30
+        fontSize:28,
        },
      heading3:{
         fontFamily:"Poppins-Bold",
-        fontSize:28
+        fontSize:25
        },
        heading4:{
         fontFamily:"Poppins-Bold",
-        fontSize:25
+        fontSize:22
 
        },
        heading5:{
         fontFamily:"Poppins-Bold",
-        fontSize:22
+        fontSize:20
        },
        heading6:{
         fontFamily:"Poppins-Bold",
-        fontSize:20
+        fontSize:18
        },
        hr:{
         backgroundColor:"white"
