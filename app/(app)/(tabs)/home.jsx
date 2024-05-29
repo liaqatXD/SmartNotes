@@ -3,7 +3,7 @@ import { SafeAreaView } from 'react-native-safe-area-context';
 import Setting from '../../../components/Setting';
 import { Link } from 'expo-router';
 import { useState,useCallback } from 'react';
-import {getAccount,getToDo} from "../../../asyncStorage";
+import {getAccount,getToDo,getFlashCardsStorage} from "../../../asyncStorage";
 import { useFocusEffect } from 'expo-router';
 import { FontAwesome6 } from '@expo/vector-icons';
 
@@ -34,12 +34,23 @@ const Home = () => {
         )
       })
       .catch((err)=>console.log(err.message));
+
+      //getting flashcards
+      getFlashCardsStorage().
+      then((flashcards)=>{
+        if(flashcards){
+          setNoOfFlashCards(flashcards.length)
+        }
+        else setNoOfFlashCards(0);
+      })
+      .catch((err)=>console.log(err.message));
    }))
 
   const [noOfNotes,setNoOfNotes]=useState('');
   const [taskTitle,setTaskTitle]=useState('');
   const [noOfTasks,setNoOfTasks]=useState('');
   const [noOfPomo,setNoOfPomo]=useState('');
+  const [noOfFlashCards,setNoOfFlashCards]=useState('');
 
   return (
     <SafeAreaView className="flex-1">
@@ -76,11 +87,15 @@ const Home = () => {
         <Text className="text-white font-bold text-6xl">{noOfTasks}</Text>
           <Text className="text-white font-psemibold text-4xl text-center">Tasks</Text>
         </View>
-        <View className="bg-sky-400 px-4 py-7  rounded-lg" style={{
-          width:"90%"
-        }}>
-        <Text className="text-white font-bold text-6xl text-center">{noOfPomo}</Text>
-          <Text className="text-white font-psemibold pt-2 text-5xl text-center">Pomodoro</Text>
+
+        <View className="bg-sky-400 px-4 py-12  rounded-lg w-half" >
+        <Text className="text-white font-bold text-6xl">{noOfPomo}</Text>
+          <Text className="text-white font-psemibold pt-2 text-4xl text-center">Pomo</Text>
+        </View>
+        {/* flashcards */}
+        <View className="bg-lime-400 px-4 py-12  rounded-lg w-half" >
+        <Text className="text-white font-bold text-6xl">{noOfFlashCards}</Text>
+          <Text className="text-white font-psemibold pt-2 text-4xl text-center">Cards</Text>
         </View>
       </View>
     </View>

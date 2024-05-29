@@ -3,6 +3,7 @@ import { Entypo } from '@expo/vector-icons';
 import { FontAwesome5 } from '@expo/vector-icons';
 import { MaterialIcons } from '@expo/vector-icons';
 import { Ionicons } from '@expo/vector-icons';
+import { MaterialCommunityIcons } from '@expo/vector-icons';
 import { useColorScheme } from "nativewind";
 
 
@@ -39,6 +40,12 @@ const TabsLayout = () => {
      <Tabs.Screen name='timer' options={{
        tabBarLabel:"Timer",
        tabBarIcon: ({size, color }) =><Ionicons name="alarm" size={30} color={color} /> 
+    }}   />
+
+    {/* flashcards */}
+ <Tabs.Screen name='flashcards' options={{
+       tabBarLabel:"Flashcards",
+       tabBarIcon: ({size, color }) =><MaterialCommunityIcons name="cards" size={30} color={color} />
     }}   />
 
   </Tabs>

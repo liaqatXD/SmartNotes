@@ -120,3 +120,26 @@ export const getUserSession = async () => {
     
     }
   };
+
+  // storing flash cards
+  export const setFlashCardsStorage = async (value) => {
+    try {
+  const FlashCard = JSON.stringify(value);
+  await AsyncStorage.setItem('flash-cards', FlashCard);
+    } catch (e) {
+      // saving error
+      throw new Error(`Error while setting FlashCards: ${e.message}`)
+
+    }
+  };
+
+  export const getFlashCardsStorage = async () => {
+    try {
+    const FlashCard=   await AsyncStorage.getItem('flash-cards');
+       return FlashCard != null ? JSON.parse(FlashCard) : null;
+    
+    } catch (e) {
+        throw new Error(`Error while getting FlashCards: ${e.message}`)
+    
+    }
+  };

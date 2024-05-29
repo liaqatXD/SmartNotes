@@ -5,7 +5,7 @@ import {useQueryClient} from "@tanstack/react-query"
 import { setUserSession } from '../../asyncStorage';
 import { useColorScheme } from "nativewind";
 import { setTheme } from '../../asyncStorage';
-import { getAccount,setToDo } from '../../asyncStorage';
+import { getAccount,setToDo,setFlashCardsStorage } from '../../asyncStorage';
 import { StatusBar } from 'expo-status-bar';
 import { Ionicons } from '@expo/vector-icons'; 
 import { Entypo } from '@expo/vector-icons';
@@ -38,6 +38,7 @@ const Settings = () => {
         setIsLoggedIn(false);
         setUserSession("false");
         setToDo(null);
+        setFlashCardsStorage([]);
     }
   return (
    (<View className="flex-1 p-6  bg-white dark:bg-black-light

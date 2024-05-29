@@ -6,7 +6,9 @@ const darkSetting=require("../assets/images/dark_setting.png");
 const Setting = () => {
   const {colorScheme}=useColorScheme();
   return (
-   <Pressable onPress={()=>router.push('/settings ')}>
+   <Pressable onPress={()=>router.push('/settings ')}
+    style={{width:50,height:50,alignSelf:'flex-end'}}
+   >
     <Image source={colorScheme==='light'?darkSetting:lightSetting} style={{width:50,height:50,alignSelf:"flex-end",margin:5}} />
    </Pressable>
   )

@@ -1,8 +1,6 @@
 import { View,Image } from 'react-native';
 import { Pressable } from 'react-native';
 import { useColorScheme } from 'nativewind';
-import { SimpleLineIcons } from '@expo/vector-icons';
-import { AntDesign } from '@expo/vector-icons';
 import { router } from 'expo-router';
 const notebookImage=require("../assets/images/notebook.png");
 const noteImage=require("../assets/images/note.png");
